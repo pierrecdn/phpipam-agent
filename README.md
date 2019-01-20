@@ -27,6 +27,6 @@ Pass the MySQL password and the phpipam agent key.
 $ docker run -ti -d -e PHPIPAM_AGENT_KEY=dummy-key -e MYSQL_ENV_MYSQL_PASSWORD=my-secret-pw --name ipam-agent --link phpipam-mysql:mysql pierrecdn/phpipam-agent
 ```
 
-Now, the discovery scans will be performed every 15mn by default.
+Now, the discovery scans will be performed every 1mn by default.
 
 The logs are available on stdout/stderr (allowing to use `docker logs`).
