@@ -30,3 +30,15 @@ $ docker run -ti -d -e PHPIPAM_AGENT_KEY=dummy-key -e MYSQL_ENV_MYSQL_PASSWORD=m
 Now, the discovery scans will be performed every 1mn by default.
 
 The logs are available on stdout/stderr (allowing to use `docker logs`).
+
+### Customize update and discovery schedule
+
+You can use `CRONTAB_UPDATE` and `CRONTAB_DISCOVER` environment variables
+to customize schedule for network updates and discovery respectively.
+
+You can set `disabled` to disable a schedule.
+
+The format is a crontab definition of the form `*/15 * * * *` :
+```bash
+$ docker run -ti -d -e PHPIPAM_AGENT_KEY=dummy-key -e MYSQL_ENV_MYSQL_PASSWORD=my-secret-pw -e CRONTAB_UPDATE="*/15 * * * *" -e CRONTAB_DISCOVER="disabled" --name ipam-agent --link phpipam-mysql:mysql pierrecdn/phpipam-agent 
+```
