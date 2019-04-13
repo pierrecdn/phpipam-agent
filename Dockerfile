@@ -21,6 +21,7 @@ RUN docker-php-ext-configure mysqli --with-mysqli=mysqlnd && \
     docker-php-ext-install pcntl
 
 COPY php.ini /usr/local/etc/php/
+COPY entrypoint.sh /
 
 # Clone phpipam-agent sources
 WORKDIR /opt/
@@ -40,8 +41,9 @@ RUN cp config.dist.php config.php && \
 # Setup crontab
 ENV CRONTAB_FILE=/etc/cron.d/phpipam
 RUN echo "* * * * * /usr/local/bin/php /opt/phpipam-agent/index.php update > /proc/1/fd/1 2>/proc/1/fd/2" > ${CRONTAB_FILE} && \
+    echo "* * * * * /usr/local/bin/php /opt/phpipam-agent/index.php discover > /proc/1/fd/1 2>/proc/1/fd/2" >> ${CRONTAB_FILE} && \
     chmod 0644 ${CRONTAB_FILE} && \
     crontab ${CRONTAB_FILE}
 
-CMD [ "sh", "-c", "printenv > /etc/environment && cron -f" ]
+CMD [ "/entrypoint.sh" ]
 
